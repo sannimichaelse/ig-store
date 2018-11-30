@@ -43,9 +43,20 @@ const address = Joi.string()
     .min(1)
     .required();
 const email = Joi.string()
+    .email()
     .min(1)
     .required();
 const token = Joi.string()
+    .min(1)
+    .required();
+
+const name = Joi.string()
+    .min(1)
+    .required();
+const pictures_url = Joi.string()
+    .min(1)
+    .required();
+const description = Joi.string()
     .min(1)
     .required();
 
@@ -66,6 +77,16 @@ const signupSchema = {
     email
 };
 
+const storeSchema = {
+    name,
+    pictures_url,
+    address,
+    city_code,
+    state_code,
+    country_code,
+    description
+};
+
 const emailVerificationSchema = {
     email
 };
@@ -84,5 +105,6 @@ export {
     emailVerificationSchema,
     signupSchema,
     changePasswordSchema,
-    loginSchema
+    loginSchema,
+    storeSchema
 };

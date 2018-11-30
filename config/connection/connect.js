@@ -1,9 +1,9 @@
-import { Client } from "pg";
+import { Pool } from "pg";
 import config from "../configuration";
 
 const connectionString = config.testDB;
 
-const client = new Client({
+const client = new Pool({
     connectionString
 });
 

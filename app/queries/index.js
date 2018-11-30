@@ -3,7 +3,6 @@ import moment from "moment";
 import randomstring from "randomstring";
 import db from "../../config/connection/connect";
 
-
 const saltRounds = 10;
 const obj = {};
 const err = {};
@@ -36,8 +35,8 @@ class queryProvider {
                 })
                 .catch(e => {
                     console.log(e);
-                    err.responseMessage = 'Error Finding User';
-                    err.responseCode = '02';
+                    err.responseMessage = "Error Finding User";
+                    err.responseCode = "02";
                     reject(err);
                 });
         });
@@ -48,11 +47,6 @@ class queryProvider {
      * @param  {string} body - Request object
      * @return {string} res
      */
-
-    // When login, active = true
-    // When logout, active = false
-    // When updating, set updated_at time
-    // when creating, set added_at = updated_at
     static saveUserQuery(body) {
         const {
             firstname,
@@ -104,7 +98,12 @@ class queryProvider {
                 });
         });
     }
-
+    /**
+     * verify token
+     * @staticmethod
+     * @param  {string} body - Request object
+     * @return {string} res
+     */
     static verifySecretTokenQuery(token) {
         return new Promise((resolve, reject) => {
             const query = `SELECT * FROM users WHERE secret_token = '${token}'`;
@@ -127,7 +126,12 @@ class queryProvider {
                 });
         });
     }
-
+    /**
+     * update password
+     * @staticmethod
+     * @param  {string} body - Request object
+     * @return {string} res
+     */
     static updatePasswordByTokenQuery(newpassword, token) {
         //console.log(newpassword, token);
 
@@ -161,6 +165,216 @@ class queryProvider {
                 })
                 .catch(res => {
                     reject(res);
+                });
+        });
+    }
+    /**
+     * Find store by name
+     * @staticmethod
+     * @param  {string} name - Request object
+     * @return {string} res
+     */
+    static findStoreByNameQuery(name) {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT * FROM stores WHERE name = '${name}'`;
+            db.query(query)
+                .then(result => {
+                    if (result.rowCount === 0) {
+                        err.responseMessage = "store does not exist";
+                        err.responseCode = "01";
+                        reject(err);
+                    } else if (result.rowCount >= 1) {
+                        obj.rowCount = result.rowCount;
+                        obj.rows = result.rows;
+                        resolve(obj);
+                    }
+                })
+                .catch(e => {
+                    console.log(e);
+                    err.responseMessage = "Error Finding Store";
+                    err.responseCode = "02";
+                    reject(err);
+                });
+        });
+    }
+    /**
+     * save new store
+     * @staticmethod
+     * @param  {string} body - Request object
+     * @return {string} res
+     */
+    static saveNewStoreQuery(body, id) {
+        const {
+            name,
+            pictures_url,
+            address,
+            city_code,
+            state_code,
+            country_code,
+            description
+        } = body;
+
+        const d = new Date();
+        const added_at = moment(d).format("YYYY-MM-DD HH:mm:ss");
+        return new Promise((resolve, reject) => {
+            this.findStoreByNameQuery(name)
+                .then(err => {
+                    console.log(err);
+                    reject(err);
+                })
+                .catch(res => {
+                    const queryBody = `
+                              INSERT INTO stores(created_by_user_id, updated_at, added_at, name, address, state_code, city_code, country_code, pictures_url, description)
+                              VALUES ('${id}', '${added_at}', '${added_at}', '${name}','${address}','${state_code}','${city_code}', '${country_code}', '${pictures_url}', '${description}')`;
+                    db.query(queryBody)
+                        .then(result => {
+                            if (result.rowCount >= 1) {
+                                resolve("Data Saved");
+                            } else if (result.rowCount === 0) {
+                                console.log("got here", result);
+                                reject(result);
+                            }
+                        })
+                        .catch(e => {
+                            console.log("e", e);
+                            reject("Error Saving New Store");
+                        });
+                });
+        });
+    }
+    /**
+     * update store
+     * @staticmethod
+     * @param  {string} body - Request object
+     * @return {string} res
+     */
+    static updateStoreQuery(body, id, storeId) {
+        const {
+            name,
+            pictures_url,
+            address,
+            city_code,
+            state_code,
+            country_code,
+            description
+        } = body;
+
+        const d = new Date();
+        const updated_at = moment(d).format("YYYY-MM-DD HH:mm:ss");
+        return new Promise((resolve, reject) => {
+            const queryBody = `UPDATE stores 
+            SET name = '${name}', 
+                updated_at = '${updated_at}', 
+                pictures_url = '${pictures_url}', 
+                address = '${address}', 
+                city_code = '${city_code}', 
+                state_code = '${state_code}', 
+                country_code = '${country_code}', 
+                description = '${description}' 
+            WHERE 
+                id = '${storeId}' AND created_by_user_id = '${id}'`;
+            db.query(queryBody)
+                .then(result => {
+                    if (result.rowCount >= 1) {
+                        resolve("Data Saved");
+                    } else if (result.rowCount === 0) {
+                        console.log("got here", result);
+                        reject("Could Not Save User");
+                    }
+                })
+                .catch(e => {
+                    console.log("e", e);
+                    reject("Error Saving New User");
+                });
+        });
+    }
+    /**
+     * Find store by id
+     * @staticmethod
+     * @param  {string} email - Request object
+     * @return {string} res
+     */
+    static findStoreByIdQuery(userId, storeId) {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT * FROM stores WHERE id = '${storeId}' AND created_by_user_id = '${userId}'`;
+            db.query(query)
+                .then(result => {
+                    if (result.rowCount === 0) {
+                        err.responseMessage = "Store does not exist";
+                        err.responseCode = "01";
+                        reject(err);
+                    } else if (result.rowCount >= 1) {
+                        obj.rowCount = result.rowCount;
+                        obj.rows = result.rows;
+                        resolve(obj);
+                    }
+                })
+                .catch(e => {
+                    console.log(e);
+                    err.responseMessage = "Error Finding store";
+                    err.responseCode = "02";
+                    reject(err);
+                });
+        });
+    }
+    /**
+     * find all stores created by user
+     * @staticmethod
+     * @param  {string} userId - Request object
+     * @return {string} res
+     */
+    static findAllStoresCreatedByUserQuery(userId) {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT * FROM stores WHERE created_by_user_id = '${userId}'`;
+            db.query(query)
+                .then(result => {
+                    if (result.rowCount === 0) {
+                        err.responseMessage = "No store created by user yet";
+                        err.responseCode = "01";
+                        reject(err);
+                    } else if (result.rowCount >= 1) {
+                        obj.rowCount = result.rowCount;
+                        obj.rows = result.rows;
+                        resolve(obj);
+                    }
+                })
+                .catch(e => {
+                    console.log(e);
+                    err.responseMessage = "Error fetching store";
+                    err.responseCode = "02";
+                    reject(err);
+                });
+        });
+    }
+    /**
+     * Delete store by id query
+     * @staticmethod
+     * @param  {string} userId - Request object
+     * @param  {string} storeId - Request object
+     * @return {string} res
+     */
+    static deleteStoreByIdQuery(userId, storeId) {
+        return new Promise((resolve, reject) => {
+            const query = `DELETE FROM stores WHERE created_by_user_id = '${userId}' AND id = '${storeId}'`;
+            db.query(query)
+                .then(result => {
+                    if (result.rowCount === 0) {
+                        console.log("Del " + result);
+                        err.responseMessage = "No store created by user yet";
+                        err.responseCode = "01";
+                        reject(err);
+                    } else if (result.rowCount >= 1) {
+                        console.log("del " + result);
+                        obj.rowCount = result.rowCount;
+                        obj.rows = result.rows;
+                        resolve(obj);
+                    }
+                })
+                .catch(e => {
+                    console.log(e);
+                    err.responseMessage = "Error fetching store";
+                    err.responseCode = "02";
+                    reject(err);
                 });
         });
     }

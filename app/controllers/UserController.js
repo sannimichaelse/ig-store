@@ -1,9 +1,5 @@
-import userService from "../services/userService";
+import UserService from "../services/UserService";
 import passport from "passport";
-import GoogleStrategy from "../../config/passport-google";
-import FacebookStrategy from "../../config/passport-facebook";
-
-//console.log(keys);
 /**
  * @exports
  * @class userController
@@ -16,11 +12,10 @@ class UserControllerClass {
      * @param {object} res - Response object
      * @return {json} res.json
      */
-    createUser(req, res) {
+    static createUser(req, res) {
         const { firstname } = req.body;
         console.log(firstname);
-        userService
-            .saveUser(req.body)
+        UserService.saveUser(req.body)
             .then(result => {
                 console.log(result);
                 return res.status(201).json({
@@ -43,42 +38,40 @@ class UserControllerClass {
             });
     }
 
-    googleRedirect(req, res) {
+    static googleRedirect(req, res) {
         passport.authenticate("google");
     }
 
-    facebookRedirect(req, res) {
+    static facebookRedirect(req, res) {
         passport.authenticate("facebook", {
             failureRedirect: "/api/v1",
             successRedirect: "/api/v1"
         });
     }
 
-    changePassword(req, res) {
+    static changePassword(req, res) {
         const { email } = req.body;
 
         const host = req.headers.host;
 
-        userService
-            .sendChangePasswordMail(email, host)
+        UserService.sendChangePasswordMail(email, host)
             .then(response => {
                 return res.status(200).json({
                     responseMessage: "Please Check Mail to Change Password"
                 });
             })
             .catch(err => {
-                console.log('hi '+err);
+                console.log("hi " + err);
                 return res.status(400).json(err);
             });
     }
 
-    getSecretToken(req, res) {
+    static getSecretToken(req, res) {
         const token = req.params.id;
 
         console.log(token);
 
-        userService
-            .verifySecretToken(token)
+        UserService.verifySecretToken(token)
             .then(response => {
                 return res.status(200).json({
                     responseMessage:
@@ -92,13 +85,12 @@ class UserControllerClass {
             });
     }
 
-    changePasswordByToken(req, res) {
+    static changePasswordByToken(req, res) {
         console.log("Loggedin UserID - " + req.decoded.data);
 
         const { newpassword, token } = req.body;
 
-        userService
-            .updatePasswordByToken(newpassword, token)
+        UserService.updatePasswordByToken(newpassword, token)
             .then(response => {
                 return res.status(200).json({
                     responseMessage: "Password Updated Successfully"
@@ -112,11 +104,10 @@ class UserControllerClass {
             });
     }
 
-    loginUser(req, res) {
+    static loginUser(req, res) {
         const { email, password } = req.body;
 
-        userService
-            .validateUserLogin(email, password)
+        UserService.validateUserLogin(email, password)
             .then(response => {
                 return res.status(200).json(response);
             })
@@ -128,6 +119,4 @@ class UserControllerClass {
     }
 }
 
-const userControllerInstance = new UserControllerClass();
-
-export default userControllerInstance;
+export default UserControllerClass;

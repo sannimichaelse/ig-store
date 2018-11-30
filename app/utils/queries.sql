@@ -25,6 +25,20 @@ CREATE TABLE users
     suspended_at VARCHAR (55) NOT NULL
 );
 
+CREATE TABLE stores
+(
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    created_by_user_id VARCHAR (50) NOT NULL,
+    updated_at VARCHAR (50) NOT NULL,
+    added_at VARCHAR (50) NOT NULL,
+    name VARCHAR (50) UNIQUE NOT NULL,
+    address VARCHAR (50) NOT NULL,
+    state_code VARCHAR (55) NOT NULL,
+    city_code VARCHAR (55) NOT NULL,
+    country_code VARCHAR (55) NOT NULL,
+    pictures_url TEXT (55) NOT NULL,
+    description VARCHAR (55) NOT NULL
+);
 
 -- Oauth Table 
 

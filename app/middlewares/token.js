@@ -20,12 +20,10 @@ class tokenMiddleware {
         if (token) {
             jwt.verify(token, config.jwtSecretKey, (err, decoded) => {
                 if (err) {
-                    return res
-                        .status(400)
-                        .json({
-                            verifyToken: false,
-                            message: "Failed to authenticate token."
-                        });
+                    return res.status(400).json({
+                        verifyToken: false,
+                        message: "Failed to authenticate token."
+                    });
                 }
                 req.decoded = decoded;
                 next();

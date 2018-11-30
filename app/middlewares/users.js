@@ -25,7 +25,7 @@ class UserMiddleware {
             .catch(err => {
                 return res.status(400).json({
                     responseCode: "01",
-                    responseMessage: err.details[0].message
+                    responseMessage: err.details[0].message.replace(/[\"]/gi, '')
                 });
             });
     }
@@ -36,7 +36,7 @@ class UserMiddleware {
             .catch(err => {
                 return res.status(400).json({
                     responseCode: "01",
-                    responseMessage: err.details[0].message
+                    responseMessage: err.details[0].message.replace(/[\"]/gi, '')
                 });
             });
     }
@@ -47,7 +47,7 @@ class UserMiddleware {
             .catch(err => {
                 return res.status(400).json({
                     responseCode: "01",
-                    responseMessage: err.details[0].message
+                    responseMessage: err.details[0].message.replace(/[\"]/gi, '')
                 });
             });
     }
@@ -58,7 +58,7 @@ class UserMiddleware {
             .catch(err => {
                 return res.status(400).json({
                     responseCode: "01",
-                    responseMessage: err.details[0].message
+                    responseMessage: err.details[0].message.replace(/[\"]/gi, '')
                 });
             });
     }

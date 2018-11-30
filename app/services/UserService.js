@@ -25,13 +25,12 @@ class userService {
         });
     }
 
-    /**
-     * save new user
-     * @staticmethod
-     * @param  {string} body - Request object
-     * @return {string} res
-     */
-
+    // **
+    //  * save new user
+    //  * @staticmethod
+    //  * @param  {string} body - Request object
+    //  * @return {string} res
+    //  */
     // When login, active = true
     // When logout, active = false
     // When updating, set updated_at time

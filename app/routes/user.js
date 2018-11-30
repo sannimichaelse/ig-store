@@ -1,37 +1,41 @@
 import { Router } from "express";
 import passport from "passport";
-import userController from "../controllers/userController";
+import UserController from "../controllers/UserController";
 import UserMiddleware from "../middlewares/users";
 import TokenMiddleware from "../middlewares/token";
+const {
+    createUser,
+    loginUser,
+    changePassword,
+    getSecretToken,
+    changePasswordByToken
+} = UserController;
+
+const {
+    validateChangePassword,
+    validateUserSignup,
+    validateUserLogin,
+    validateChangePasswordEmail
+} = UserMiddleware;
+
+const { verifyToken } = TokenMiddleware;
 
 const router = Router();
 
-router.post(
-    "/auth/signup",
-    UserMiddleware.validateUserSignup,
-    userController.createUser
-);
-router.post(
-    "/auth/login",
-    UserMiddleware.validateUserLogin,
-    userController.loginUser
-);
+router.post("/auth/signup", validateUserSignup, createUser);
+router.post("/auth/login", validateUserLogin, loginUser);
 router.post(
     "/auth/changepassword",
-    UserMiddleware.validateChangePasswordEmail,
-    TokenMiddleware.verifyToken,
-    userController.changePassword
+    validateChangePasswordEmail,
+    verifyToken,
+    changePassword
 );
-router.get(
-    "/auth/email/verify/:id",
-    TokenMiddleware.verifyToken,
-    userController.getSecretToken
-);
+router.get("/auth/email/verify/:id", verifyToken, getSecretToken);
 router.post(
     "/auth/email/changepassword",
-    UserMiddleware.validateChangePassword,
-    TokenMiddleware.verifyToken,
-    userController.changePasswordByToken
+    validateChangePassword,
+    verifyToken,
+    changePasswordByToken
 );
 
 // Google login

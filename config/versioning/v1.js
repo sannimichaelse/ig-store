@@ -1,20 +1,20 @@
 import { Router } from "express";
 import passport from "passport";
 import user from "../../app/routes/user";
+import store from "../../app/routes/store";
 
 const api = Router();
 
 // api.use(cors())
 api.get("/", (req, res) =>
-    res
-        .status(200)
-        .json({
-            ok: true,
-            message: "Welcome to OnePercentLab",
-            status: "API version 1"
-        })
+    res.status(200).json({
+        ok: true,
+        message: "Welcome to OnePercentLab",
+        status: "API version 1"
+    })
 );
 api.use("/", user);
+api.use("/store", store);
 api.use(passport.initialize());
 api.use(passport.session());
 api.use((req, res, next) => {
@@ -36,8 +36,8 @@ api.use((req, res, next) => {
 });
 
 // No routes matched? 404.
-api.use((req, res) =>
-    res.status(404).send("Sorry that route/method doesnt exist")
+api.use("*", (req, res) =>
+    res.status(404).send({ message: "Sorry that route/method doesnt exist" })
 );
 
 export default api;

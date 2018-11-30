@@ -93,7 +93,6 @@ describe("Testing Login Route - api/v1/login ", () => {
 });
 
 describe("Change Password - api/v1/auth/changepassword ", () => {
-
     it("it should not attempt to change password if access-token is empty ", done => {
         let body = {
             email: "sannimichaelse@gmail.com"
