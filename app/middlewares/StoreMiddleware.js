@@ -15,12 +15,16 @@ class UserMiddleware {
      * @return {json} res.json
      */
     static validateStoreFields(req, res, next) {
+        if (Object.keys(req.body).length === 0) {
+            return res.status(400).json({
+                statusMessage: "Please fill all fields"
+            });
+        }
         Joi.validate(req.body, storeSchema)
             .then(value => next())
             .catch(err => {
                 return res.status(400).json({
-                    responseCode: "01",
-                    responseMessage: err.details[0].message.replace(/[\"]/gi, '')
+                    statusMessage: err.details[0].message.replace(/[\"]/gi, "")
                 });
             });
     }
