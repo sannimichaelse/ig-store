@@ -25,8 +25,8 @@ before(() => {
     });
 });
 
-describe(" Create New Store - api/v1/store - POST ", () => {
-    it("it should not attempt to save a new store if all fields or object is empty ", done => {
+describe(" STORE POST REQUESTS ", () => {
+    it("it should not attempt to save a new store if all fields or object is empty - - api/v1/store - POST ", done => {
         let body = {};
         request(app)
             .post("/api/v1/store")
@@ -39,7 +39,7 @@ describe(" Create New Store - api/v1/store - POST ", () => {
                 done();
             });
     });
-    it("it should not attempt to save a new store if any of the fields is empty ", done => {
+    it("it should not attempt to save a new store if any of the fields is empty - api/v1/store - POST ", done => {
         let body = {
             name: "",
             pictures_url: "",
@@ -65,81 +65,33 @@ describe(" Create New Store - api/v1/store - POST ", () => {
     });
 });
 
-// describe("Testing Login Route - api/v1/login ", () => {
-//     it("it should not attempt to login a new user if any or all fields are empty ", done => {
-//         let body = {
-//             password: "",
-//             email: "sannimichaellelsss@gmail.com"
-//         };
-//         request(app)
-//             .post("/api/v1/auth/login")
-//             .send(body)
-//             .expect("Content-Type", /json/)
-//             .expect(400)
-//             .end((err, res) => {
-//                 assert.equal(res.body.responseCode, "01");
-//                 assert.equal(
-//                     res.body.responseMessage,
-//                     '"password" is not allowed to be empty'
-//                 );
-//                 done();
-//             });
-//     });
-//     it("it should return invalid login details ", done => {
-//         let body = {
-//             password: "tomiwa5259333",
-//             email: "sannimicheal.se@gmail.com"
-//         };
-//         request(app)
-//             .post("/api/v1/auth/login")
-//             .send(body)
-//             .expect("Content-Type", /json/)
-//             .expect(400)
-//             .end((err, res) => {
-//                 assert.equal(
-//                     res.body.responseMessage,
-//                     "Wrong Password and Email Combination"
-//                 );
-//                 done();
-//             });
-//     });
-// });
-
-// describe("Change Password - api/v1/auth/changepassword ", () => {
-//     it("it should not attempt to change password if access-token is empty ", done => {
-//         let body = {
-//             email: "sannimichaelse@gmail.com"
-//         };
-//         request(app)
-//             .post("/api/v1/auth/changepassword")
-//             .set("x-access-token", "")
-//             .send(body)
-//             .expect("Content-Type", /json/)
-//             .expect(403)
-//             .end((err, res) => {
-//                 assert.equal(res.body.message, "No token provided.");
-//                 assert.equal(res.body.verifyToken, false);
-//                 done();
-//             });
-//     });
-
-//     it("it should not attempt to change password if email is wrong ", done => {
-//         let body = {
-//             email: "sannimichaelse@gmail.com"
-//         };
-//         request(app)
-//             .post("/api/v1/auth/changepassword")
-//             .set(
-//                 "x-access-token",
-//                 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiYzM3YWE5ZTQtZGRlMy00NDMzLThiMGUtZGQ4ZGQwNjNkMWE1IiwiaWF0IjoxNTQwOTI4Nzc2LCJleHAiOjE1NDEwMTUxNzZ9.VTDL1GqoVdhq_PHodVspX-ccdFhOTbkolwdO2k3yeMY"
-//             )
-//             .send(body)
-//             .expect("Content-Type", /json/)
-//             .expect(400)
-//             .end((err, res) => {
-//                 assert.equal(res.body.responseCode, "01");
-//                 assert.equal(res.body.responseMessage, "user does not exist");
-//                 done();
-//             });
-//     });
-// });
+describe(" STORE GET REQUESTS", () => {
+    it("it should get store by id - api/v1/store/:id - GET ", done => {
+        request(app)
+            .get("/api/v1/store/e57284c9-7b59-4fb0-977f-587cec29ebe7")
+            .set("x-access-token", userToken)
+            .expect("Content-Type", /json/)
+            .expect(200)
+            .end((err, res) => {
+                assert.equal(
+                    res.body.statusMessage,
+                    "Successfully fetched store"
+                );
+                done();
+            });
+    });
+    it("it should get all stores created by logged-in user - api/v1/store/all - GET ", done => {
+        request(app)
+            .get("/api/v1/store/all")
+            .set("x-access-token", userToken)
+            .expect("Content-Type", /json/)
+            .expect(200)
+            .end((err, res) => {
+                assert.equal(
+                    res.body.statusMessage,
+                    "Successfully fetched all stores created by user"
+                );
+                done();
+            });
+    });
+});

@@ -12,6 +12,10 @@ export default {
         {
             name: "Auth",
             description: "Authenticate a user"
+        },
+        {
+            name: "Store",
+            description: "Creating Stores"
         }
     ],
     paths: {
@@ -311,6 +315,230 @@ export default {
                         type: "string"
                     }
                 ]
+            }
+        },
+        "/store/:id ": {
+            get: {
+                tags: ["Store"],
+                summary: "Get store by id",
+                consumes: ["application/x-www-form-urlencoded"],
+                parameters: [
+                    {
+                        name: "x-access-token",
+                        in: "header",
+                        description: "Authorization token",
+                        required: true,
+                        type: "string"
+                    }
+                ],
+                description: "Get a store by store id ",
+                responses: {
+                    "200": {
+                        description: "Successfully fetched store"
+                    },
+                    "400": {
+                        description: "Error fetching store"
+                    }
+                }
+            }
+        },
+        "/store/all ": {
+            get: {
+                tags: ["Store"],
+                summary: "Get all stores created by user",
+                consumes: ["application/x-www-form-urlencoded"],
+                parameters: [
+                    {
+                        name: "x-access-token",
+                        in: "header",
+                        description: "Authorization token",
+                        required: true,
+                        type: "string"
+                    }
+                ],
+                description: "Get all stores created by user",
+                responses: {
+                    "200": {
+                        description:
+                            "Successfully fetched all stores created by user"
+                    },
+                    "400": {
+                        description: "Error fetching store"
+                    }
+                }
+            }
+        },
+        "/store": {
+            post: {
+                tags: ["Store"],
+                summary: "Create a new store",
+                consumes: ["application/x-www-form-urlencoded"],
+                parameters: [
+                    {
+                        name: "x-access-token",
+                        in: "header",
+                        description: "Authorization token",
+                        required: true,
+                        type: "string"
+                    },
+                    {
+                        name: "name",
+                        in: "formData",
+                        description: "name of the store",
+                        required: true,
+                        type: "string"
+                    },
+                    {
+                        name: "picture_url",
+                        in: "formData",
+                        description: "The picture url of the store",
+                        required: true,
+                        type: "string"
+                    },
+                    {
+                        name: "address",
+                        in: "formData",
+                        description: "Address of store",
+                        required: true,
+                        type: "string"
+                    },
+                    {
+                        name: "city_code",
+                        in: "formData",
+                        description: "store city code",
+                        required: true,
+                        type: "string"
+                    },
+                    {
+                        name: "state_code",
+                        in: "formData",
+                        description: "store state code",
+                        required: true,
+                        type: "string"
+                    },
+                    {
+                        name: "country_code",
+                        in: "formData",
+                        description: "store country code",
+                        required: true,
+                        type: "string"
+                    },
+                    {
+                        name: "description",
+                        in: "formData",
+                        description: "store description",
+                        required: true,
+                        type: "string"
+                    }
+                ],
+                description: "Saves new store",
+                responses: {
+                    "200": {
+                        description: "New Store created successfully"
+                    },
+                    "400": {
+                        description: "Could not save store"
+                    }
+                }
+            }
+        },
+        "/store/:id": {
+            put: {
+                tags: ["Store"],
+                summary: "Update Store by id",
+                consumes: ["application/x-www-form-urlencoded"],
+                parameters: [
+                    {
+                        name: "x-access-token",
+                        in: "header",
+                        description: "Authorization token",
+                        required: true,
+                        type: "string"
+                    },
+                    {
+                        name: "name",
+                        in: "formData",
+                        description: "name of the store",
+                        required: true,
+                        type: "string"
+                    },
+                    {
+                        name: "picture_url",
+                        in: "formData",
+                        description: "The picture url of the store",
+                        required: true,
+                        type: "string"
+                    },
+                    {
+                        name: "address",
+                        in: "formData",
+                        description: "Address of store",
+                        required: true,
+                        type: "string"
+                    },
+                    {
+                        name: "city_code",
+                        in: "formData",
+                        description: "store city code",
+                        required: true,
+                        type: "string"
+                    },
+                    {
+                        name: "state_code",
+                        in: "formData",
+                        description: "store state code",
+                        required: true,
+                        type: "string"
+                    },
+                    {
+                        name: "country_code",
+                        in: "formData",
+                        description: "store country code",
+                        required: true,
+                        type: "string"
+                    },
+                    {
+                        name: "description",
+                        in: "formData",
+                        description: "store description",
+                        required: true,
+                        type: "string"
+                    }
+                ],
+                description: "Updating store by id",
+                responses: {
+                    "200": {
+                        description: "Store updated successfully"
+                    },
+                    "400": {
+                        description: "Could not update store"
+                    }
+                }
+            }
+        },
+        "/store/:id   ": {
+            delete: {
+                tags: ["Store"],
+                summary: "Delete Store by id",
+                consumes: ["application/x-www-form-urlencoded"],
+                parameters: [
+                    {
+                        name: "x-access-token",
+                        in: "header",
+                        description: "Authorization token",
+                        required: true,
+                        type: "string"
+                    }
+                ],
+                description: "Delete Store by id",
+                responses: {
+                    "200": {
+                        description: "Successfully deleted store"
+                    },
+                    "400": {
+                        description: "Error deleting store"
+                    }
+                }
             }
         }
     }

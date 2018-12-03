@@ -14,10 +14,10 @@ class UserControllerClass {
      */
     static createUser(req, res) {
         const { firstname } = req.body;
-        console.log(firstname);
+       // console.log(firstname);
         UserService.saveUser(req.body)
             .then(result => {
-                console.log(result);
+               // console.log(result);
                 return res.status(201).json({
                     responseMessage: "New user created successfully"
                 });
@@ -61,7 +61,7 @@ class UserControllerClass {
                 });
             })
             .catch(err => {
-                console.log("hi " + err);
+               // console.log("hi " + err);
                 return res.status(400).json(err);
             });
     }
@@ -69,7 +69,7 @@ class UserControllerClass {
     static getSecretToken(req, res) {
         const token = req.params.id;
 
-        console.log(token);
+       // console.log(token);
 
         UserService.verifySecretToken(token)
             .then(response => {
@@ -86,7 +86,7 @@ class UserControllerClass {
     }
 
     static changePasswordByToken(req, res) {
-        console.log("Loggedin UserID - " + req.decoded.data);
+       // console.log("Loggedin UserID - " + req.decoded.data);
 
         const { newpassword, token } = req.body;
 
@@ -97,7 +97,7 @@ class UserControllerClass {
                 });
             })
             .catch(err => {
-                console.log(err);
+               // console.log(err);
                 return res.status(400).json({
                     responseMessage: "There Was an Error Changing Password"
                 });

@@ -13,10 +13,10 @@ class StoreController {
      */
     static createNewStore(req, res) {
         const { data } = req.decoded;
-        console.log(`Logged in user id  ${data}`);
+       // console.log(`Logged in user id  ${data}`);
         StoreService.saveNewStore(req.body, data)
             .then(result => {
-                console.log(result);
+               // console.log(result);
                 return res.status(201).json({
                     statusMessage: "New Store created successfully"
                 });
@@ -46,10 +46,10 @@ class StoreController {
     static updateStore(req, res) {
         const { data } = req.decoded;
         const { id } = req.params;
-        console.log(`Logged in user id  ${data}`);
+       // console.log(`Logged in user id  ${data}`);
         StoreService.updateStore(req.body, data, id)
             .then(result => {
-                console.log(result);
+               // console.log(result);
                 return res.status(200).json({
                     statusMessage: "Store updated successfully"
                 });
@@ -70,10 +70,10 @@ class StoreController {
     static findStoreById(req, res) {
         const { data } = req.decoded;
         const { id } = req.params;
-        console.log(`Logged in user id  ${data}`);
+       // console.log(`Logged in user id  ${data}`);
         StoreService.findStoreById(data, id)
             .then(result => {
-                console.log(result);
+               // console.log(result);
                 return res.status(200).json({
                     statusMessage: "Successfully fetched store",
                     data: result.rows[0]
@@ -94,10 +94,10 @@ class StoreController {
      */
     static getAllStoresCreatedByUser(req, res) {
         const { data } = req.decoded;
-        console.log(`Logged in user id  ${data}`);
+       // console.log(`Logged in user id  ${data}`);
         StoreService.getAllStoresCreatedByUser(data)
             .then(result => {
-                console.log(result);
+               // console.log(result);
                 return res.status(200).json({
                     statusMessage:
                         "Successfully fetched all stores created by user",
@@ -120,10 +120,10 @@ class StoreController {
     static deleteStoreById(req, res) {
         const { data } = req.decoded;
         const { id } = req.params;
-        console.log(`Logged in user id  ${data}`);
+       // console.log(`Logged in user id  ${data}`);
         StoreService.deleteStoreById(data, id)
             .then(result => {
-                console.log(result);
+               // console.log(result);
                 return res.status(200).json({
                     statusMessage: "Successfully deleted store"
                 });

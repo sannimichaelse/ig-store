@@ -34,7 +34,7 @@ class queryProvider {
                     }
                 })
                 .catch(e => {
-                    console.log(e);
+                   // console.log(e);
                     err.responseMessage = "Error Finding User";
                     err.responseCode = "02";
                     reject(err);
@@ -69,7 +69,7 @@ class queryProvider {
         const active = false;
         const added_at = moment(d).format("YYYY-MM-DD HH:mm:ss");
         const secretToken = randomstring.generate();
-        console.log("secretToken", secretToken);
+       // console.log("secretToken", secretToken);
 
         return new Promise((resolve, reject) => {
             this.findUserByEmailQuery(email)
@@ -86,12 +86,12 @@ class queryProvider {
                                 if (result.rowCount >= 1) {
                                     resolve("Data Saved");
                                 } else if (result.rowCount === 0) {
-                                    console.log("got here", result);
+                                   // console.log("got here", result);
                                     reject("Could Not Save User");
                                 }
                             })
                             .catch(e => {
-                                console.log("e", e);
+                               // console.log("e", e);
                                 reject("Error Saving New User");
                             });
                     });
@@ -140,9 +140,9 @@ class queryProvider {
         return new Promise((resolve, reject) => {
             this.verifySecretTokenQuery(token)
                 .then(err => {
-                    console.log("verified", token);
+                   // console.log("verified", token);
                     bcrypt.hash(newpassword, saltRounds).then(hash => {
-                        console.log(hash, token);
+                       // console.log(hash, token);
                         const queryBody = `
                     UPDATE users
                         SET password = '${hash}', updated_at = '${updated_at}'
@@ -153,12 +153,12 @@ class queryProvider {
                                 if (result.rowCount >= 1) {
                                     resolve("Data Saved");
                                 } else if (result.rowCount === 0) {
-                                    console.log("got here", result);
+                                   // console.log("got here", result);
                                     reject("Could Not Save User");
                                 }
                             })
                             .catch(e => {
-                                console.log("e", e);
+                               // console.log("e", e);
                                 reject("Error Saving New User");
                             });
                     });
@@ -190,7 +190,7 @@ class queryProvider {
                     }
                 })
                 .catch(e => {
-                    console.log(e);
+                   // console.log(e);
                     err.responseMessage = "Error Finding Store";
                     err.responseCode = "02";
                     reject(err);
@@ -219,7 +219,7 @@ class queryProvider {
         return new Promise((resolve, reject) => {
             this.findStoreByNameQuery(name)
                 .then(err => {
-                    console.log(err);
+                   // console.log(err);
                     reject(err);
                 })
                 .catch(res => {
@@ -231,12 +231,12 @@ class queryProvider {
                             if (result.rowCount >= 1) {
                                 resolve("Data Saved");
                             } else if (result.rowCount === 0) {
-                                console.log("got here", result);
+                               // console.log("got here", result);
                                 reject(result);
                             }
                         })
                         .catch(e => {
-                            console.log("e", e);
+                           // console.log("e", e);
                             reject("Error Saving New Store");
                         });
                 });
@@ -278,12 +278,12 @@ class queryProvider {
                     if (result.rowCount >= 1) {
                         resolve("Data Saved");
                     } else if (result.rowCount === 0) {
-                        console.log("got here", result);
+                       // console.log("got here", result);
                         reject("Could Not Save User");
                     }
                 })
                 .catch(e => {
-                    console.log("e", e);
+                   // console.log("e", e);
                     reject("Error Saving New User");
                 });
         });
@@ -310,7 +310,7 @@ class queryProvider {
                     }
                 })
                 .catch(e => {
-                    console.log(e);
+                   // console.log(e);
                     err.responseMessage = "Error Finding store";
                     err.responseCode = "02";
                     reject(err);
@@ -339,7 +339,7 @@ class queryProvider {
                     }
                 })
                 .catch(e => {
-                    console.log(e);
+                   // console.log(e);
                     err.responseMessage = "Error fetching store";
                     err.responseCode = "02";
                     reject(err);
@@ -359,19 +359,19 @@ class queryProvider {
             db.query(query)
                 .then(result => {
                     if (result.rowCount === 0) {
-                        console.log("Del " + result);
+                       // console.log("Del " + result);
                         err.responseMessage = "No store created by user yet";
                         err.responseCode = "01";
                         reject(err);
                     } else if (result.rowCount >= 1) {
-                        console.log("del " + result);
+                       // console.log("del " + result);
                         obj.rowCount = result.rowCount;
                         obj.rows = result.rows;
                         resolve(obj);
                     }
                 })
                 .catch(e => {
-                    console.log(e);
+                   // console.log(e);
                     err.responseMessage = "Error fetching store";
                     err.responseCode = "02";
                     reject(err);

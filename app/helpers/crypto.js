@@ -15,9 +15,9 @@ class comparePassword {
     static compare(newpassword, dbpassword) {
         return new Promise((resolve, reject) => {
             // Load hash from your password DB.
-            console.log(newpassword, dbpassword);
+            //console.log(newpassword, dbpassword);
             bcrypt.compare(newpassword, dbpassword).then(response => {
-                console.log(response);
+                //console.log(response);
                 if (response) {
                     resolve("Password Matched");
                 } else {

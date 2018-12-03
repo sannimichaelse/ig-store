@@ -99,7 +99,7 @@ class userService {
                         });
                 })
                 .catch(err => {
-                    console.log(err);
+                   //// console.log(err);
                     reject(
                         "Wrong Email and Password Combination. Please Check your credentials"
                     );
@@ -114,7 +114,7 @@ class userService {
         return new Promise((resolve, reject) => {
             this.findUserByEmail(email)
                 .then(res => {
-                    console.log(res);
+                   //// console.log(res);
 
                     const secretToken = res.rows[0].secret_token;
 
@@ -124,9 +124,9 @@ class userService {
                         "/api/v1/auth/email/verify/" +
                         secretToken;
 
-                    console.log(link);
+                   //// console.log(link);
 
-                    console.log(config.sendGridKey);
+                   //// console.log(config.sendGridKey);
 
                     sgMail.setApiKey(config.sendGridKey);
 
@@ -145,7 +145,7 @@ class userService {
                     resolve("email sent");
                 })
                 .catch(err => {
-                    console.log(err);
+                   //// console.log(err);
                     reject(err);
                 });
         });

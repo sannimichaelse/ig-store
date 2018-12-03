@@ -29,7 +29,7 @@ class oauthService {
                     }
                 })
                 .catch(e => {
-                    console.log(e);
+                   // console.log(e);
                     err.rowCount = 0;
                     err.rows = [];
                     reject(err);
@@ -62,12 +62,12 @@ class oauthService {
                             if (result.rowCount >= 1) {
                                 resolve("User Saved Successfully");
                             } else if (result.rowCount === 0) {
-                                console.log("got here", result);
+                               // console.log("got here", result);
                                 reject(new Error("Not Saved"));
                             }
                         })
                         .catch(e => {
-                            console.log("e", e);
+                           // console.log("e", e);
                             reject(new Error("Could not save User"));
                         });
                 })
