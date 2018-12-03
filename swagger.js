@@ -505,7 +505,7 @@ export default {
                         type: "string"
                     }
                 ],
-                description: "Updating store by id",
+                description: "Update store by id",
                 responses: {
                     "200": {
                         description: "Store updated successfully"
