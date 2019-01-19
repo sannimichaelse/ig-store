@@ -3,7 +3,8 @@ import {
     signupSchema,
     emailVerificationSchema,
     changePasswordSchema,
-    loginSchema
+    loginSchema,
+    updateSignupSchema
 } from "../models/validation";
 /**
  *
@@ -25,7 +26,24 @@ class UserMiddleware {
             .catch(err => {
                 return res.status(400).json({
                     responseCode: "01",
-                    responseMessage: err.details[0].message.replace(/[\"]/gi, '')
+                    responseMessage: err.details[0].message.replace(
+                        /[\"]/gi,
+                        ""
+                    )
+                });
+            });
+    }
+
+    static validateSignupUpdate(req, res, next) {
+        Joi.validate(req.body, updateSignupSchema)
+            .then(value => next())
+            .catch(err => {
+                return res.status(400).json({
+                    responseCode: "01",
+                    responseMessage: err.details[0].message.replace(
+                        /[\"]/gi,
+                        ""
+                    )
                 });
             });
     }
@@ -36,7 +54,10 @@ class UserMiddleware {
             .catch(err => {
                 return res.status(400).json({
                     responseCode: "01",
-                    responseMessage: err.details[0].message.replace(/[\"]/gi, '')
+                    responseMessage: err.details[0].message.replace(
+                        /[\"]/gi,
+                        ""
+                    )
                 });
             });
     }
@@ -47,7 +68,10 @@ class UserMiddleware {
             .catch(err => {
                 return res.status(400).json({
                     responseCode: "01",
-                    responseMessage: err.details[0].message.replace(/[\"]/gi, '')
+                    responseMessage: err.details[0].message.replace(
+                        /[\"]/gi,
+                        ""
+                    )
                 });
             });
     }
@@ -58,7 +82,10 @@ class UserMiddleware {
             .catch(err => {
                 return res.status(400).json({
                     responseCode: "01",
-                    responseMessage: err.details[0].message.replace(/[\"]/gi, '')
+                    responseMessage: err.details[0].message.replace(
+                        /[\"]/gi,
+                        ""
+                    )
                 });
             });
     }

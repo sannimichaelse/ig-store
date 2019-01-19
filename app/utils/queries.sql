@@ -75,7 +75,7 @@ VALUES
 --   "phone_number":"09090908094",
 --   "image_url":"https://web.whatsapp.com/",
 --   "password":"tomiwa5259",
---   "oauth_type":"signup",
+--   "oauth_type":"signup",FU
 --   "oauth_id":"223",
 --   "state_code":"3333",
 --   "city_code":"idfg453",

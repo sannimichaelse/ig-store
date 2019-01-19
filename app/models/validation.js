@@ -49,6 +49,9 @@ const email = Joi.string()
 const token = Joi.string()
     .min(1)
     .required();
+const fullname = Joi.string()
+    .min(1)
+    .required();
 
 const name = Joi.string()
     .min(1)
@@ -61,20 +64,24 @@ const description = Joi.string()
     .required();
 
 const signupSchema = {
+    password,
+    fullname,
+    email
+};
+
+const updateSignupSchema = {
     firstname,
     lastname,
     gender,
     date_of_birth,
     phone_number,
     image_url,
-    password,
     oauth_type,
     oauth_id,
     state_code,
     city_code,
     country_code,
-    address,
-    email
+    address
 };
 
 const storeSchema = {
@@ -106,5 +113,6 @@ export {
     signupSchema,
     changePasswordSchema,
     loginSchema,
-    storeSchema
+    storeSchema,
+    updateSignupSchema
 };

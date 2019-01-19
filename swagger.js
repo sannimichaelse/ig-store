@@ -60,6 +60,54 @@ export default {
                 consumes: ["application/x-www-form-urlencoded"],
                 parameters: [
                     {
+                        name: "fullname",
+                        in: "formData",
+                        description:
+                            "The fullname of the user account to be created",
+                        required: true,
+                        type: "string"
+                    },
+                    {
+                        name: "password",
+                        in: "formData",
+                        description:
+                            "The password for the user account to be created",
+                        required: true,
+                        type: "string"
+                    },
+                    {
+                        name: "email",
+                        in: "formData",
+                        description:
+                            "The email for the user account to be created",
+                        required: true,
+                        type: "string"
+                    }
+                ],
+                responses: {
+                    "201": {
+                        description: "New User created successfully",
+                        schema: {
+                            $ref: "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        description: "User Already Exists"
+                    },
+                    "500": {
+                        description: "Error Saving User"
+                    }
+                }
+            }
+        },
+        "/auth/signup/update": {
+            post: {
+                tags: ["Auth"],
+                summary: "Update user account details",
+                description: "Returns success 200 on success.",
+                consumes: ["application/x-www-form-urlencoded"],
+                parameters: [
+                    {
                         name: "firstname",
                         in: "formData",
                         description:
@@ -104,14 +152,6 @@ export default {
                         in: "formData",
                         description:
                             "The image_url for the user account to be created",
-                        required: true,
-                        type: "string"
-                    },
-                    {
-                        name: "password",
-                        in: "formData",
-                        description:
-                            "The password for the user account to be created",
                         required: true,
                         type: "string"
                     },
@@ -163,18 +203,10 @@ export default {
                         required: true,
                         type: "string"
                     },
-                    {
-                        name: "email",
-                        in: "formData",
-                        description:
-                            "The email for the user account to be created",
-                        required: true,
-                        type: "string"
-                    }
                 ],
                 responses: {
-                    "201": {
-                        description: "New User created successfully",
+                    "200": {
+                        description: "User details updated successfully",
                         schema: {
                             $ref: "#/definitions/User"
                         }

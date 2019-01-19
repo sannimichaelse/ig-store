@@ -8,12 +8,14 @@ const {
     loginUser,
     changePassword,
     getSecretToken,
-    changePasswordByToken
+    changePasswordByToken,
+    updateSignup
 } = UserController;
 
 const {
     validateChangePassword,
     validateUserSignup,
+    validateSignupUpdate,
     validateUserLogin,
     validateChangePasswordEmail
 } = UserMiddleware;
@@ -23,6 +25,12 @@ const { verifyToken } = TokenMiddleware;
 const router = Router();
 
 router.post("/auth/signup", validateUserSignup, createUser);
+router.post(
+    "/auth/signup/update",
+    validateSignupUpdate,
+    verifyToken,
+    updateSignup
+);
 router.post("/auth/login", validateUserLogin, loginUser);
 router.post(
     "/auth/changepassword",
