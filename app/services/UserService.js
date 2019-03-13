@@ -104,11 +104,12 @@ class userService {
                             resolve(data);
                         })
                         .catch(err => {
+                            console.log(err)
                             reject("Wrong Password and Email Combination");
                         });
                 })
                 .catch(err => {
-                    //// console.log(err);
+                    console.log(err);
                     reject(
                         "Wrong Email and Password Combination. Please Check your credentials"
                     );

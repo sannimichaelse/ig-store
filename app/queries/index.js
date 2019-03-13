@@ -465,7 +465,7 @@ class queryProvider {
                 .then(result => {
                     if (result.rowCount === 0) {
                         // console.log("Del " + result);
-                        err.responseMessage = "No store created by user yet";
+                        err.responseMessage = "No store with id";
                         err.responseCode = "01";
                         reject(err);
                     } else if (result.rowCount >= 1) {
