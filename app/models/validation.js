@@ -1,67 +1,28 @@
 import Joi from "joi";
 
-const firstname = Joi.string()
-    .min(1)
-    .required();
-const lastname = Joi.string()
-    .min(1)
-    .required();
-const gender = Joi.string()
-    .min(1)
-    .required();
-const date_of_birth = Joi.string()
-    .min(1)
-    .required();
-const phone_number = Joi.string()
-    .min(1)
-    .required();
-const image_url = Joi.string()
-    .min(1)
-    .required();
-const password = Joi.string()
-    .min(1)
-    .required();
-const newpassword = Joi.string()
-    .min(1)
-    .required();
-const oauth_type = Joi.string()
-    .min(1)
-    .required();
-const oauth_id = Joi.string()
-    .min(1)
-    .required();
-const state_code = Joi.string()
-    .min(1)
-    .required();
-const city_code = Joi.string()
-    .min(1)
-    .required();
-const country_code = Joi.string()
-    .min(1)
-    .required();
-const address = Joi.string()
-    .min(1)
-    .required();
-const email = Joi.string()
-    .email()
-    .min(1)
-    .required();
-const token = Joi.string()
-    .min(1)
-    .required();
-const fullname = Joi.string()
-    .min(1)
-    .required();
-
-const name = Joi.string()
-    .min(1)
-    .required();
-const pictures_url = Joi.string()
-    .min(1)
-    .required();
-const description = Joi.string()
-    .min(1)
-    .required();
+const firstname = Joi.string().min(1).required();
+const lastname = Joi.string().min(1).required();
+const gender = Joi.string().min(1).required();
+const date_of_birth = Joi.string().min(1).required();
+const phone_number = Joi.string().min(1).required();
+const image_url = Joi.string().min(1);
+const password = Joi.string().min(1).required();
+const newpassword = Joi.string().min(1).required();
+const oauth_type = Joi.string().min(1).required();
+const oauth_id = Joi.string().min(1).required();
+const state_code = Joi.string().min(1).required();
+const city_code = Joi.string().min(1).required();
+const country_code = Joi.string().min(1).required();
+const address = Joi.string().min(1).required();
+const email = Joi.string().email().min(1).required();
+const token = Joi.string().min(1).required();
+const fullname = Joi.string().min(1).required();
+const storename = Joi.string().min(1).required();
+const category = Joi.string().min(1);
+const tags = Joi.string().min(1);
+const price = Joi.string().min(1).required();
+const productname = Joi.string().min(1).required();
+const store_id = Joi.string().min(1).required();
 
 const signupSchema = {
     password,
@@ -85,13 +46,7 @@ const updateSignupSchema = {
 };
 
 const storeSchema = {
-    name,
-    pictures_url,
-    address,
-    city_code,
-    state_code,
-    country_code,
-    description
+    storename
 };
 
 const emailVerificationSchema = {
@@ -108,11 +63,22 @@ const loginSchema = {
     password
 };
 
+// Optional paramters image_url,category,
+const productSchema = {
+    price,
+    productname,
+    store_id,
+    category,
+    tags,
+    image_url
+}
+
 export {
     emailVerificationSchema,
     signupSchema,
     changePasswordSchema,
     loginSchema,
     storeSchema,
-    updateSignupSchema
+    updateSignupSchema,
+    productSchema
 };

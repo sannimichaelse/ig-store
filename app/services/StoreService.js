@@ -1,4 +1,4 @@
-import queryProvider from "../queries/index";
+import StoreQuery from "../queries/StoreQueries";
 
 /**
  * @exports
@@ -11,10 +11,10 @@ class StoreService {
      * @param  {string} name - Request object
      * @return {string} res
      */
-    static findStoreByName(name) {
+    static findStoreByName(id, name) {
         return new Promise((resolve, reject) => {
-            queryProvider
-                .findUserBynameQuery(name)
+            StoreQuery
+                .findStoreByNameQuery(id, name)
                 .then(response => resolve(response))
                 .catch(err => reject(err));
         });
@@ -28,13 +28,12 @@ class StoreService {
      */
     static saveNewStore(body, id) {
         return new Promise((resolve, reject) => {
-            queryProvider
+            StoreQuery
                 .saveNewStoreQuery(body, id)
                 .then(response => resolve(response))
                 .catch(err => reject(err));
         });
     }
-
     /**
      * update store
      * @staticmethod
@@ -43,7 +42,7 @@ class StoreService {
      */
     static updateStore(body, id, storeId) {
         return new Promise((resolve, reject) => {
-            queryProvider
+            StoreQuery
                 .updateStoreQuery(body, id, storeId)
                 .then(response => resolve(response))
                 .catch(err => reject(err));
@@ -57,7 +56,7 @@ class StoreService {
      */
     static findStoreById(userId, storeId) {
         return new Promise((resolve, reject) => {
-            queryProvider
+            StoreQuery
                 .findStoreByIdQuery(userId, storeId)
                 .then(response => resolve(response))
                 .catch(err => reject(err));
@@ -71,7 +70,7 @@ class StoreService {
      */
     static getAllStoresCreatedByUser(userId) {
         return new Promise((resolve, reject) => {
-            queryProvider
+            StoreQuery
                 .findAllStoresCreatedByUserQuery(userId)
                 .then(response => resolve(response))
                 .catch(err => reject(err));
@@ -85,7 +84,7 @@ class StoreService {
      */
     static deleteStoreById(userId, storeId) {
         return new Promise((resolve, reject) => {
-            queryProvider
+            StoreQuery
                 .deleteStoreByIdQuery(userId, storeId)
                 .then(response => resolve(response))
                 .catch(err => reject(err));

@@ -40,6 +40,16 @@ CREATE TABLE stores
     description VARCHAR (55) NOT NULL
 );
 
+-- New Store Table
+CREATE TABLE stores
+(
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    created_by_user_id VARCHAR (50) NOT NULL,
+    updated_at VARCHAR (50) NOT NULL,
+    added_at VARCHAR (50) NOT NULL,
+    name VARCHAR (50) UNIQUE NOT NULL
+);
+
 -- Oauth Table 
 
 CREATE TABLE oauth
@@ -48,6 +58,20 @@ CREATE TABLE oauth
     user_id VARCHAR (50) NOT NULL,
     added_at VARCHAR (50) NOT NULL,
     updated_at VARCHAR (50) NOT NULL
+);
+
+CREATE TABLE products
+(
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    created_by_user_id VARCHAR (50) NOT NULL,
+    store_id VARCHAR (50) NOT NULL,
+    added_at VARCHAR (50) NOT NULL,
+    updated_at VARCHAR (50) NOT NULL,
+    productname VARCHAR (50) UNIQUE NOT NULL,
+    price VARCHAR (50) NOT NULL,
+    image_url VARCHAR (55) NOT NULL,
+    tags VARCHAR (55) NOT NULL,
+    category VARCHAR (55) NOT NULL
 );
 
 -- INSER INTO OAUTH

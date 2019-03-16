@@ -2,7 +2,14 @@ import { Router } from "express";
 import passport from "passport";
 import user from "../../app/routes/user";
 import store from "../../app/routes/store";
+import product from "../../app/routes/product";
+import StoreController from "../../app/controllers/StoreController";
+import TokenMiddleware from "../../app/middlewares/token";
+import ProductController from "../../app/controllers/ProductController";
 
+const { findStoreByName } = StoreController;
+const { getAllProductsCreatedByUser, getAllProductsInStore } = ProductController;
+const { verifyToken } = TokenMiddleware;
 const api = Router();
 
 // api.use(cors())
@@ -13,8 +20,13 @@ api.get("/", (req, res) =>
         status: "API version 1"
     })
 );
+
 api.use("/", user);
+api.get('/:store', verifyToken, findStoreByName);
 api.use("/store", store);
+api.use("/product", product);
+api.put('/:products', verifyToken, getAllProductsCreatedByUser)
+api.post('/:products', verifyToken, getAllProductsInStore)
 api.use(passport.initialize());
 api.use(passport.session());
 api.use((req, res, next) => {

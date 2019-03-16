@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { storeSchema } from "../models/validation";
+import { productSchema } from "../models/validation";
 /**
  *
  * @exports
@@ -14,13 +14,13 @@ class UserMiddleware {
      * @param {function} next - middleware next (for error handling)
      * @return {json} res.json
      */
-    static validateStoreFields(req, res, next) {
+    static validateProductPayload(req, res, next) {
         if (Object.keys(req.body).length === 0) {
             return res.status(400).json({
-                statusMessage: "Store Parameters cannot be empty"
+                statusMessage: "Products Parameters cannot be empty"
             });
         }
-        Joi.validate(req.body, storeSchema)
+        Joi.validate(req.body, productSchema)
             .then(value => next())
             .catch(err => {
                 return res.status(400).json({

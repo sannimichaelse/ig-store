@@ -1,9 +1,9 @@
-import StoreService from "../services/StoreService";
+import ProductService from "../services/ProductService";
 /**
  * @exports
- * @class StoreController
+ * @class ProductController
  */
-class StoreController {
+class ProductController {
     /**
      * Creates a new user
      * @staticmethod
@@ -11,150 +11,191 @@ class StoreController {
      * @param {object} res - Response object
      * @return {json} res.json
      */
-    static createNewStore(req, res) {
+    static createNewProduct(req, res) {
         const { data } = req.decoded;
-        // console.log(`Logged in user id  ${data}`);
-        StoreService.saveNewStore(req.body, data)
+        ProductService.saveNewProduct(req.body, data)
             .then(result => {
                 // console.log(result);
                 return res.status(201).json({
-                    statusMessage: "New Store created successfully"
+                    statusMessage: "New Product created successfully"
                 });
             })
             .catch(err => {
-                console.log(err)
+                console.log(err);
                 if (err.rows) {
                     return res.status(400).json({
-                        statusMessage: `Store with this name ${
-                            err.rows[0].storename
+                        statusMessage: `Product with name ${
+                            err.rows[0].productname
                             } exists already`
+                    });
+                } else if (err.responseCode == "01") {
+                    return res.status(404).json({
+                        statusMessage: err.responseMessage
+                    });
+                } else if (err.responseCode == "02") {
+                    return res.status(400).json({
+                        statusMessage: err.responseMessage
                     });
                 } else {
                     return res.status(400).json({
-                        statusMessage: "Could not save store"
+                        statusMessage: "Error Saving Product"
                     });
                 }
             });
     }
     /**
-     * Update a store
+     * Update a Product
      * @staticmethod
      * @param  {object} req - user object
      * @param {object} res - Response object
      * @return {json} res.json
      */
-    static updateStore(req, res) {
+    static updateProduct(req, res) {
         const { data } = req.decoded;
         const { id } = req.params;
         // console.log(`Logged in user id  ${data}`);
-        StoreService.updateStore(req.body, data, id)
+        ProductService.updateProduct(req.body, data, id)
             .then(result => {
                 // console.log(result);
                 return res.status(200).json({
-                    statusMessage: "Store updated successfully"
+                    statusMessage: "Product updated successfully"
                 });
             })
             .catch(err => {
-                if (err == "store not found") {
+                if (err == "Product not found") {
                     return res.status(404).json({
-                        statusMessage: "Store with id not found"
+                        statusMessage: "Product with id not found"
                     });
                 }
                 return res.status(400).json({
-                    statusMessage: "Error Updating Store"
+                    statusMessage: "Error Updating Product"
                 });
             });
     }
     /**
-     * Get store by id
+     * Get Product by id
      * @staticmethod
      * @param  {object} req - user object
      * @param {object} res - Response object
      * @return {json} res.json
      */
-    static findStoreById(req, res) {
+    static findProductById(req, res) {
         const { data } = req.decoded;
         const { id } = req.params;
         // console.log(`Logged in user id  ${data}`);
-        StoreService.findStoreById(data, id)
+        ProductService.findProductById(data, id)
             .then(result => {
                 // console.log(result);
                 return res.status(200).json({
-                    statusMessage: "Successfully fetched store",
+                    statusMessage: "Successfully fetched Product",
                     data: result.rows[0]
                 });
             })
             .catch(err => {
                 if (err.responseCode == "01") {
                     return res.status(404).json({
-                        statusMessage: "Store does not exist"
+                        statusMessage: "Product does not exist"
                     });
                 }
 
                 return res.status(400).json({
-                    statusMessage: "Error fetching store"
+                    statusMessage: "Error fetching Product/Invalid Product ID"
                 });
             });
     }
     /**
-    * Get store by name
+    * Get Product by name
     * @staticmethod
     * @param  {object} req - user object
     * @param {object} res - Response object
     * @return {json} res.json
     */
-    static findStoreByName(req, res) {
+    static findProductByName(req, res) {
         const { data } = req.decoded;
-        const { store } = req.params;
+        const { Product } = req.params;
         const { name } = req.query;
 
-        console.log(store, name)
-        StoreService.findStoreByName(data, name)
+        ProductService.findProductByName(data, name)
             .then(result => {
-                req.params = {};
-                req.query = {};
+                // console.log(result);
                 return res.status(200).json({
-                    statusMessage: "Successfully fetched store",
+                    statusMessage: "Successfully fetched Product",
                     data: result.rows[0]
                 });
             })
             .catch(err => {
                 //console.log(err)
-                req.params = {};
-                req.query = {};
                 if (err.responseCode == "01") {
                     return res.status(404).json({
-                        statusMessage: "Store does not exist"
+                        statusMessage: "Product does not exist"
                     });
                 }
 
                 return res.status(400).json({
-                    statusMessage: "Error fetching store"
+                    statusMessage: "Error fetching Product"
                 });
             });
     }
     /**
-     * Get store by id
+     * Get Product by id
      * @staticmethod
      * @param  {object} req - user object
      * @param {object} res - Response object
      * @return {json} res.json
      */
-    static getAllStoresCreatedByUser(req, res) {
+    static getAllProductsCreatedByUser(req, res) {
         const { data } = req.decoded;
-        // console.log(`Logged in user id  ${data}`);
-        StoreService.getAllStoresCreatedByUser(data)
+        const { products } = req.params;
+        const { page } = req.query;
+        console.log(page, products)
+        ProductService.getAllProductsCreatedByUser(data, page)
             .then(result => {
+                req.params = {};
+                req.query = {};
                 // console.log(result);
                 return res.status(200).json({
                     statusMessage:
-                        "Successfully fetched all stores created by user",
+                        "Successfully fetched all Products created by user",
                     data: result
                 });
             })
             .catch(err => {
+                req.params = {};
+                req.query = {};
                 return res.status(400).json({
-                    statusMessage: "Error fetching store"
+                    statusMessage: "Error fetching Product"
+                });
+            });
+    }
+    /**
+     * Get Product by id
+     * @staticmethod
+     * @param  {object} req - user object
+     * @param {object} res - Response object
+     * @return {json} res.json
+     */
+    static getAllProductsInStore(req, res) {
+        const { data } = req.decoded;
+        const { products } = req.params;
+        const { page, store_id } = req.query;
+        console.log(page, products, store_id)
+        ProductService.getAllProductsInStore(data, page, store_id)
+            .then(result => {
+                // console.log(result);
+                return res.status(200).json({
+                    statusMessage:
+                        "Successfully fetched all products in Store created by User",
+                    data: result
+                });
+            })
+            .catch(err => {
+                if (err.responseCode == "02") {
+                    return res.status(400).json({
+                        statusMessage: err.responseMessage
+                    });
+                }
+                return res.status(400).json({
+                    statusMessage: "Error fetching Product in Store"
                 });
             });
     }
@@ -165,15 +206,15 @@ class StoreController {
      * @param {object} res - Response object
      * @return {json} res.json
      */
-    static deleteStoreById(req, res) {
+    static deleteProductById(req, res) {
         const { data } = req.decoded;
         const { id } = req.params;
         // console.log(`Logged in user id  ${data}`);
-        StoreService.deleteStoreById(data, id)
+        ProductService.deleteProductById(data, id)
             .then(result => {
                 // console.log(result);
                 return res.status(200).json({
-                    statusMessage: "Successfully deleted store"
+                    statusMessage: "Successfully deleted Product"
                 });
             })
             .catch(err => {
@@ -183,10 +224,10 @@ class StoreController {
                     })
                 }
                 return res.status(400).json({
-                    statusMessage: "Error deleting store"
+                    statusMessage: "Error deleting Product"
                 });
             });
     }
 }
 
-export default StoreController;
+export default ProductController;
