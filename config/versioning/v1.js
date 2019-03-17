@@ -25,8 +25,8 @@ api.use("/", user);
 api.get('/:store', verifyToken, findStoreByName);
 api.use("/store", store);
 api.use("/product", product);
-api.put('/:products', verifyToken, getAllProductsCreatedByUser)
-api.post('/:products', verifyToken, getAllProductsInStore)
+api.get('/:products', verifyToken, getAllProductsCreatedByUser)
+api.get('/:products', verifyToken, getAllProductsInStore)
 api.use(passport.initialize());
 api.use(passport.session());
 api.use((req, res, next) => {

@@ -1,4 +1,5 @@
 import ProductService from "../services/ProductService";
+import StoreController from "./StoreController";
 /**
  * @exports
  * @class ProductController
@@ -111,10 +112,12 @@ class ProductController {
     * @return {json} res.json
     */
     static findProductByName(req, res) {
+
         const { data } = req.decoded;
-        const { Product } = req.params;
+        const { product } = req.params;
         const { name } = req.query;
 
+        //console.log("Params - " + product + " Query - " + name);
         ProductService.findProductByName(data, name)
             .then(result => {
                 // console.log(result);
@@ -147,25 +150,28 @@ class ProductController {
         const { data } = req.decoded;
         const { products } = req.params;
         const { page } = req.query;
-        console.log(page, products)
-        ProductService.getAllProductsCreatedByUser(data, page)
-            .then(result => {
-                req.params = {};
-                req.query = {};
-                // console.log(result);
-                return res.status(200).json({
-                    statusMessage:
-                        "Successfully fetched all Products created by user",
-                    data: result
+        console.log("hi" + page, products)
+        if (products == "products") {
+            ProductService.getAllProductsCreatedByUser(data, page)
+                .then(result => {
+                    req.params = {};
+                    req.query = {};
+                    // console.log(result);
+                    return res.status(200).json({
+                        statusMessage:
+                            "Successfully fetched all Products created by user",
+                        data: result
+                    });
+                })
+                .catch(err => {
+                    req.params = {};
+                    req.query = {};
+                    return res.status(400).json({
+                        statusMessage: "Error fetching Product"
+                    });
                 });
-            })
-            .catch(err => {
-                req.params = {};
-                req.query = {};
-                return res.status(400).json({
-                    statusMessage: "Error fetching Product"
-                });
-            });
+        }
+
     }
     /**
      * Get Product by id
@@ -184,7 +190,7 @@ class ProductController {
                 // console.log(result);
                 return res.status(200).json({
                     statusMessage:
-                        "Successfully fetched all products in Store created by User",
+                        "Successfully fetched all products in Store created by StoreID",
                     data: result
                 });
             })

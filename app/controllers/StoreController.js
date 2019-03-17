@@ -1,4 +1,6 @@
 import StoreService from "../services/StoreService";
+import ProductService from "../services/ProductService"
+
 /**
  * @exports
  * @class StoreController
@@ -14,6 +16,7 @@ class StoreController {
     static createNewStore(req, res) {
         const { data } = req.decoded;
         // console.log(`Logged in user id  ${data}`);
+
         StoreService.saveNewStore(req.body, data)
             .then(result => {
                 // console.log(result);
@@ -106,32 +109,86 @@ class StoreController {
     static findStoreByName(req, res) {
         const { data } = req.decoded;
         const { store } = req.params;
-        const { name } = req.query;
+        const { name, page, store_id } = req.query;
+        console.log(req.query)
 
-        console.log(store, name)
-        StoreService.findStoreByName(data, name)
-            .then(result => {
-                req.params = {};
-                req.query = {};
-                return res.status(200).json({
-                    statusMessage: "Successfully fetched store",
-                    data: result.rows[0]
-                });
-            })
-            .catch(err => {
-                //console.log(err)
-                req.params = {};
-                req.query = {};
-                if (err.responseCode == "01") {
-                    return res.status(404).json({
-                        statusMessage: "Store does not exist"
+        console.log("from store " + store, name, page, store_id)
+        if (store == "store") {
+            StoreService.findStoreByName(data, name)
+                .then(result => {
+                    req.params = {};
+                    req.query = {};
+                    return res.status(200).json({
+                        statusMessage: "Successfully fetched store",
+                        data: result.rows[0]
                     });
-                }
+                })
+                .catch(err => {
+                    //console.log(err)
+                    req.params = {};
+                    req.query = {};
+                    if (err.responseCode == "01") {
+                        return res.status(404).json({
+                            statusMessage: "Store does not exist"
+                        });
+                    }
 
-                return res.status(400).json({
-                    statusMessage: "Error fetching store"
+                    return res.status(400).json({
+                        statusMessage: "Error fetching store"
+                    });
                 });
-            });
+        } else if (Object.keys(req.query).length == "1") {
+            if (req.query.page == "") {
+                return res.status(400).json({
+                    statusMessage: "Page number cannot be empty"
+                });
+            }
+            ProductService.getAllProductsCreatedByUser(data, page)
+                .then(result => {
+                    req.params = {};
+                    req.query = {};
+                    // console.log(result);
+                    return res.status(200).json({
+                        statusMessage:
+                            "Successfully fetched all Products created by user",
+                        data: result
+                    });
+                })
+                .catch(err => {
+                    req.params = {};
+                    req.query = {};
+                    return res.status(400).json({
+                        statusMessage: "Error fetching Product"
+                    });
+                });
+        } else if (Object.keys(req.query).length == "2") {
+            console.log('got here')
+            if (req.query.page == "" || req.query.store_id == "") {
+                return res.status(400).json({
+                    statusMessage: "Page number and store id cannot be empty"
+                });
+            }
+            ProductService.getAllProductsInStore(data, page, store_id)
+                .then(result => {
+                    // console.log(result);
+                    return res.status(200).json({
+                        statusMessage:
+                            "Successfully fetched all products in Store created by StoreID",
+                        data: result
+                    });
+                })
+                .catch(err => {
+                    if (err.responseCode == "02") {
+                        return res.status(400).json({
+                            statusMessage: err.responseMessage
+                        });
+                    }
+                    return res.status(400).json({
+                        statusMessage: "Error fetching Product in Store"
+                    });
+                });
+        }
+
     }
     /**
      * Get store by id

@@ -40,7 +40,7 @@ class ProductService {
      * @param  {string} body - Request object
      * @return {string} res
      */
-    static updateProduct(body, id, ProductId) {
+    static updateProduct(body, id, productId) {
         return new Promise((resolve, reject) => {
             ProductQuery
                 .updateProductQuery(body, id, ProductId)

@@ -117,85 +117,38 @@ class ProductQueries {
                 });
         });
     }
-    static updatePasswordByTokenQuery(newpassword, token) {
-        const d = new Date();
-        const updated_at = moment(d).format("YYYY-MM-DD HH:mm:ss");
-        return new Promise((resolve, reject) => {
-            this.verifySecretTokenQuery(token)
-                .then(err => {
-                    // console.log("verified", token);
-                    bcrypt.hash(newpassword, saltRounds).then(hash => {
-                        // console.log(hash, token);
-                        const queryBody = `
-                    UPDATE users
-                        SET password = '${hash}', updated_at = '${updated_at}'
-                    WHERE
-                        secret_token = '${token}'`;
-                        db.query(queryBody)
-                            .then(result => {
-                                if (result.rowCount >= 1) {
-                                    resolve("Data Saved");
-                                } else if (result.rowCount === 0) {
-                                    // console.log("got here", result);
-                                    reject("Could Not Save User");
-                                }
-                            })
-                            .catch(e => {
-                                // console.log("e", e);
-                                reject("Error Saving New User");
-                            });
-                    });
-                })
-                .catch(res => {
-                    reject(res);
-                });
-        });
-    }
+
     /**
      * update signup
      * @staticmethod
      * @param  {string} body - Request object
      * @return {string} res
      */
-    static updateSignupQuery(body, id) {
+    static updateProductQuery(body, userId, productId) {
         const {
-            firstname,
-            lastname,
-            gender,
-            date_of_birth,
-            phone_number,
-            image_url,
-            oauth_type,
-            oauth_id,
-            state_code,
-            city_code,
-            country_code,
-            address
+            productname,
+            price,
+            tags,
+            store_id,
+            category,
+            image_url
         } = body;
 
         const d = new Date();
         const updated_at = moment(d).format("YYYY-MM-DD HH:mm:ss");
-        const completed = "yes";
-
+        // INSERT INTO products(created_by_user_id, store_id, added_at, updated_at, productname, price, image_url, tags, category)
+        // VALUES('${id}', '${store_id}', '${added_at}', '${added_at}', '${productname}', '${price}', '${image_url || "null"}', '${tags || "null"}', '${category || "null"}')`;
         return new Promise((resolve, reject) => {
-            this.findUserByIdQuery(id)
+            this.findProductByIdQuery(userId, productId)
                 .then(res => {
                     const queryBody = `
-                    UPDATE users
+                    UPDATE products
                         SET updated_at = '${updated_at}',
-                        firstname = '${firstname}',
-                        lastname = '${lastname}',
-                        gender = '${gender}',
-                        date_of_birth = '${date_of_birth}',
-                        phone_number = '${phone_number}',
-                        image_url = '${image_url}',
-                        oauth_type = '${oauth_type}',
-                        oauth_id = '${oauth_id}',
-                        state_code = '${state_code}',
-                        city_code = '${city_code}',
-                        country_code = '${country_code}',
-                        address = '${address}',
-                        completed = '${completed}'
+                        productname = '${productname}',
+                        price = '${price}',
+                        image_url = '${image_url || "null"}',
+                        tags = '${tags || "null"}',
+                        category = '${category || "null"}',
                     WHERE
                         id = '${id}'`;
                     db.query(queryBody)
@@ -205,12 +158,12 @@ class ProductQueries {
                             } else if (result.rowCount === 0) {
                                 // console.log("got here", result);
                                 console.log(result)
-                                reject("Could Not Save User");
+                                reject("Could Not Update Product");
                             }
                         })
                         .catch(e => {
                             console.log("e", e);
-                            reject("Error Saving New User");
+                            reject("Error Updating New Product");
                         });
                 })
                 .catch(err => {
@@ -235,7 +188,7 @@ class ProductQueries {
                     limit = 4;
                     break;
                 default:
-                    limit = "";
+                    limit = 1;
                     break;
             }
 
@@ -277,7 +230,7 @@ class ProductQueries {
                     limit = 4;
                     break;
                 default:
-                    limit = "";
+                    limit = 1;
                     break;
             }
             console.log(userId, pageNo, storeId)
@@ -313,18 +266,16 @@ class ProductQueries {
      * @param  {string} ProductId - Request object
      * @return {string} res
      */
-    static deleteProductByIdQuery(userId, ProductId) {
+    static deleteProductByIdQuery(userId, productId) {
         return new Promise((resolve, reject) => {
-            const query = `DELETE FROM Products WHERE created_by_user_id = '${userId}' AND id = '${ProductId}'`;
+            const query = `DELETE FROM Products WHERE created_by_user_id = '${userId}' AND id = '${productId}'`;
             db.query(query)
                 .then(result => {
                     if (result.rowCount === 0) {
-                        // console.log("Del " + result);
                         err.responseMessage = "No Product with id";
                         err.responseCode = "01";
                         reject(err);
                     } else if (result.rowCount >= 1) {
-                        // console.log("del " + result);
                         obj.rowCount = result.rowCount;
                         obj.rows = result.rows;
                         resolve(obj);
