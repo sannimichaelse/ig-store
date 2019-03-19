@@ -153,6 +153,7 @@ class StoreQueries {
             const query = `SELECT * FROM stores WHERE created_by_user_id = '${userId}'`;
             db.query(query)
                 .then(result => {
+                    //console.log(result.rowCount);
                     if (result.rowCount === 0) {
                         err.responseMessage = "No store created by user yet";
                         err.responseCode = "01";
@@ -164,7 +165,6 @@ class StoreQueries {
                     }
                 })
                 .catch(e => {
-                    // console.log(e);
                     err.responseMessage = "Error fetching store";
                     err.responseCode = "02";
                     reject(err);

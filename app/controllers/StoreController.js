@@ -210,6 +210,11 @@ class StoreController {
                 });
             })
             .catch(err => {
+                if (err.responseCode == "01") {
+                    return res.status(400).json({
+                        statusMessage: "No store created by user yet"
+                    });
+                }
                 return res.status(400).json({
                     statusMessage: "Error fetching store"
                 });
